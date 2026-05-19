@@ -103,7 +103,7 @@ The original data is augmented using:
   ## Screenshots
 
 ### Homepage
-![Homepage](img/home.png)
+(img/home.png)
 
 ## Results
 
