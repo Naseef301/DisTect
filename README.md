@@ -1,7 +1,6 @@
 # DisTect
 
-DisTect is a deep learning-based voice distress detection system that analyzes speech audio to predict both emotional distress . It  uses a hybrid CNN-BiLSTM-Attention model trained on a combined corpus of CREMA-D, RAVDESS, and TESS speech datasets.
-
+An end-to-end deep learning project that detects emotional distress from speech audio . It uses a hybrid CNN-BiLSTM-Attention model trained on a combined corpus of CREMA-D, RAVDESS, and TESS speech datasets
 
 ## Features
 
