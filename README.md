@@ -102,8 +102,8 @@ The original data is augmented using:
 
   ## Screenshots
 
-### Homepage
-!(img/home.png)
+
+![home](img/home.png)
 
 ## Results
 
