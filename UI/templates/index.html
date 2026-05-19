@@ -1,0 +1,213 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Distress Detection </title>
+<!--    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">-->
+    <link rel="stylesheet" href="/UI/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="logo-section">
+                <h1><span class="highlight">Voice Distress Detector</span></h1>
+<!--                <p class="subtitle">Voice Distress Detection </p>-->
+            </div>
+        </header>
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="left-panel">
+                <div class="welcome-section">
+                    <h2>WELCOME TO <span class="highlight-text"></span></h2>
+                    <p class="description">
+                        Deep learning-powered voice distress detection web app.
+                        Upload or record audio to analyze emotional distress patterns.
+                    </p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <input
+                        type="file"
+                        id="fileInput"
+                        accept="audio/*"
+                        style="display: none;"
+                    >
+
+                    <div class="btn-row">
+                        <button
+                            class="btn btn-upload"
+                            id="uploadBtn"
+                            title="Upload audio file">
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Upload
+                        </button>
+                        <button
+                            class="btn btn-record"
+                            id="recordBtn"
+                            title="Record audio from microphone">
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span id="recordBtnText">Record</span>
+                        </button>
+                    </div>
+
+                    <button
+                        class="btn btn-predict"
+                        id="predictBtn"
+                        disabled
+                        title="Analyze audio for distress">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="11" cy="11" r="8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M21 21l-4.35-4.35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Analyze Audio
+                    </button>
+                </div>
+
+                <!-- File Info Section -->
+                <div class="file-info" id="fileInfo" style="display: none;">
+                    <div class="file-details">
+                        <p class="file-name" id="fileName">No file selected</p>
+                        <p class="file-size" id="fileSize"></p>
+                    </div>
+
+                    <!-- Audio Player -->
+                    <audio id="audioPlayer" controls style="display: none; width: 100%; margin-top: 1rem;"></audio>
+                </div>
+
+                <!-- Error Message -->
+                <div class="error-message" id="errorMessage" style="display: none;">
+                    <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                        <line x1="12" y1="8" x2="12" y2="12" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="12" y1="16" x2="12.01" y2="16" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <p id="errorText">An error occurred</p>
+                </div>
+            </div>
+
+            <!-- Right Panel - Results -->
+            <div class="right-panel">
+                <div class="results-container" id="resultsContainer">
+                    <!-- Loading Indicator -->
+                    <div class="loading" id="loading" style="display: none;">
+                        <div class="loading-spinner"></div>
+                        <p>Analyzing audio...</p>
+                    </div>
+
+                    <div class="welcome-illustration">
+                        <svg viewBox="0 0 400 300" class="illustration-svg">
+                            <defs>
+                                <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+                                    <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+
+                            <!-- Sound waves -->
+                            <path d="M 50 150 Q 100 100, 150 150 T 250 150 T 350 150" stroke="url(#waveGradient)" stroke-width="4" fill="none" opacity="0.3"/>
+                            <path d="M 50 150 Q 100 120, 150 150 T 250 150 T 350 150" stroke="url(#waveGradient)" stroke-width="4" fill="none" opacity="0.5"/>
+                            <path d="M 50 150 Q 100 130, 150 150 T 250 150 T 350 150" stroke="url(#waveGradient)" stroke-width="5" fill="none" opacity="0.8"/>
+
+                            <!-- Microphone -->
+                            <rect x="180" y="180" width="40" height="60" rx="20" fill="#3b82f6" opacity="0.8"/>
+                            <rect x="185" y="185" width="30" height="50" rx="15" fill="#60a5fa" opacity="0.6"/>
+                            <line x1="200" y1="240" x2="200" y2="270" stroke="#3b82f6" stroke-width="4"/>
+                            <line x1="180" y1="270" x2="220" y2="270" stroke="#3b82f6" stroke-width="4"/>
+                        </svg>
+
+                        <h3>Ready to Analyze</h3>
+                        <p>Upload or record audio to detect distress patterns and emotional states</p>
+                    </div>
+
+                    <!-- Results will be displayed here -->
+                    <div class="prediction-results" id="predictionResults" style="display: none;">
+                        <h3 class="results-title">Analysis Results</h3>
+
+                        <!-- Distress Detection -->
+                        <div class="result-section">
+                            <h4>Distress Detection</h4>
+                            <div class="distress-card" id="distressCard">
+                                <div class="distress-label" id="distressLabel">--</div>
+                                <div class="distress-probability">
+                                    <span class="probability-label">Confidence:</span>
+                                    <span class="probability-value" id="distressProbability">0%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Emotion Classification -->
+                        <div class="result-section">
+                            <h4>Emotion Analysis</h4>
+                            <div class="emotion-bars" id="emotionBars">
+                                <!-- Emotion bars will be inserted here -->
+                            </div>
+                        </div>
+
+
+                        <!-- Model Accuracy -->
+                        <div class="result-section accuracy-result-section">
+                            <h4>Model Accuracy</h4>
+                            <div class="accuracy-banner accuracy-banner--inline">
+                                <div class="accuracy-stat">
+                                    <div class="accuracy-stat-header">
+                                        <span class="accuracy-label">
+                                            <span class="accuracy-icon">🎯</span>Distress Detection
+                                        </span>
+                                        <span class="accuracy-value">90%</span>
+                                    </div>
+                                    <div class="accuracy-bar-wrap">
+                                        <div class="accuracy-bar-fill" style="width: 91%;"></div>
+                                    </div>
+                                </div>
+<!--
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </main>
+
+
+    </div>
+
+<!--    <script src="{{ url_for('static', filename='js/main.js') }}"></script>-->
+    <script src="/UI/js/main.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
